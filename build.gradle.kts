@@ -1,5 +1,7 @@
 plugins {
     kotlin("jvm") version "2.1.20"
+    application
+    id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
 group = "io.github.jysohnn"
@@ -21,4 +23,12 @@ tasks.test {
 
 kotlin {
     jvmToolchain(21)
+}
+
+application {
+    mainClass.set("io.github.jysohnn.kopipe.cli.MainKt")
+}
+
+tasks.named<JavaExec>("run") {
+    standardInput = System.`in`
 }
