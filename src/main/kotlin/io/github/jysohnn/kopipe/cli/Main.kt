@@ -46,7 +46,7 @@ fun main() {
             val answer = cli.readUserInput()
 
             var toolOutput = "User refuses to run tool."
-            if (answer == "예") {
+            if (answer == "yes" || answer == "y") {
                 toolOutput = tool.invoke(input = toolInput)
 
                 cli.printToolOutput(toolOutput = toolOutput)

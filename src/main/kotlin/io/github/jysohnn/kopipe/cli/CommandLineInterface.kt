@@ -23,7 +23,7 @@ object CommandLineInterface {
             """
             |${YELLOW_TEXT_COLOR}
             |[${Role.TOOL}]
-            |${toolName} 도구를 아래 요청값으로 사용하시겠습니까? (예/아니오)
+            |Do you want to use the $toolName tool with the following request? (yes/no)
             |$toolInput
             |$RESET_TEXT_COLOR""".trimMargin()
         )
