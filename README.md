@@ -166,8 +166,8 @@ You can now run this code to see these new messages instead of the traditional "
 
 The following file formats are included in the knowledge base when scanning the current directory:
 
-- `.txt`, `.kt`, `.js`, `.java`, `.kts`
-- `.json`, `.yaml`, `.yml`, `.properties`
+- `.txt`, `.kt`, `.kts`, `.java`, `.js`, `.py`, `.c`, `.cpp`, `.rb`, `.ts`
+- `.tsx`, `.jsx`, `.html`, `.css`, `.xml`, `.json`, `.yaml`, `.yml`, `.properties`
 - File size limit: 1MB or less
 
 ## Requirements
