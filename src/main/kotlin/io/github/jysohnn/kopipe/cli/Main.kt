@@ -138,7 +138,11 @@ private fun readUserInput(): String {
            |[${Role.USER}]
            |$RESET_TEXT_COLOR""".trimMargin()
     )
-    return readln()
+    print(GREEN_TEXT_COLOR)
+    val input = readln()
+    print(RESET_TEXT_COLOR)
+
+    return input
 }
 
 private fun printToolInput(toolName: String, toolInput: String) {
