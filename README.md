@@ -1,7 +1,7 @@
 # Kopipe CLI
 
 **Kopipe CLI** is an intelligent command-line interface tool built on the [kopipe](https://github.com/jysohnn/kopipe)
-library. This CLI is a context-aware AI assistant that accepts natural language input and utilizes OpenAI's language
+library. This CLI is a context-aware AI assistant that accepts natural language input and utilizes Gemini's language
 models and vector search to select and execute appropriate tools.
 
 ## Key Features
@@ -32,6 +32,11 @@ To use OpenAI API, set the environment variable:
 
 ```bash
 export OPENAI_API_KEY="your-api-key-here"
+```
+
+To use Gemini API, set the environment variable:
+
+```bash
 export GEMINI_API_KEY="your-api-key-here"
 ```
 
@@ -169,7 +174,6 @@ The following file formats are included in the knowledge base when scanning the 
 
 - Kotlin 2.1.20+
 - JVM 21+
-- OpenAI API Key (when using OpenAI language model)
 
 ## License
 
