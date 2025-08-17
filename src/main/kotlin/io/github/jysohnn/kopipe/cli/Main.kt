@@ -45,7 +45,7 @@ fun main() {
 
         val knowledge = knowledgeStore.retrieve(
             query = userInput,
-            minSimilarity = 0.7
+            minSimilarity = 0.8
         )
 
         knowledge?.let {
@@ -75,7 +75,7 @@ fun main() {
         )
 
         loadingSpinner.stop()
-        printAssistantOutput(assistantOutput = assistantOutput)
+        printAssistantOutput(assistantOutput = assistantOutput, knowledge = knowledge)
     }
 }
 
@@ -162,10 +162,17 @@ private fun printToolOutput(toolOutput: String) {
     )
 }
 
-private fun printAssistantOutput(assistantOutput: String) {
+private fun printAssistantOutput(assistantOutput: String, knowledge: String?) {
+    val fileName = knowledge?.let {
+        val regex = Regex("""File Name:\s*(.+)""")
+        val match = regex.find(it)
+
+        match?.groupValues?.get(1)
+    }
+
     print(
         """|$BLUE_TEXT_COLOR[${Role.ASSISTANT}]
            |$assistantOutput
-           |$RESET_TEXT_COLOR""".trimMargin()
+           |$RESET_TEXT_COLOR${if (fileName != null) "\nSource: $fileName\n\n" else ""}""".trimMargin()
     )
 }
