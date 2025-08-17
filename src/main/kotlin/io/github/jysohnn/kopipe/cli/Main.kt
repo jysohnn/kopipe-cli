@@ -23,10 +23,12 @@ fun main() {
         toolContext = toolContext
     )
 
+    println("Generating knowledge based on the current directory...")
     val knowledgeStore = GeminiEmbeddingVectorStore()
     knowledgeStore.store(
         knowledge = createKnowledgeOfCurrentDirectory()
     )
+    println("Knowledge generation completed.")
 
     val toolSelector = ToolSelector(
         languageModel = GeminiLanguageModel(),
