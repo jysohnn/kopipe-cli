@@ -26,7 +26,7 @@ kotlin {
 }
 
 application {
-    mainClass.set("io.github.jysohnn.kopipe.cli.MainKt")
+    mainClass.set("io.github.jysohnn.kopipe.cli.KopipeCLIKt")
 }
 
 tasks.named<JavaExec>("run") {

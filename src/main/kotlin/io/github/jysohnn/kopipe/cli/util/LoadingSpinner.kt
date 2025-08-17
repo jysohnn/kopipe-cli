@@ -25,7 +25,7 @@ class LoadingSpinner(
                     synchronized(lock) {
                         out.print(frame)
                         out.flush()
-                        lastFrameLen = frame.length - 1 /* \r 제외 가시 길이 */
+                        lastFrameLen = frame.length - 1
                     }
                     Thread.sleep(intervalMs)
                     idx = (idx + 1) % symbols.size
