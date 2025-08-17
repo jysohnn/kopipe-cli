@@ -4,9 +4,9 @@ import io.github.jysohnn.kopipe.cli.util.LoadingSpinner
 import io.github.jysohnn.kopipe.context.Context
 import io.github.jysohnn.kopipe.context.Message
 import io.github.jysohnn.kopipe.context.Role
-import io.github.jysohnn.kopipe.knowledge.GeminiEmbeddingVectorStore
+import io.github.jysohnn.kopipe.knowledge.OpenAIEmbeddingVectorStore
 import io.github.jysohnn.kopipe.pipe.languagemodel.ContextAwareLanguageModel
-import io.github.jysohnn.kopipe.pipe.languagemodel.GeminiLanguageModel
+import io.github.jysohnn.kopipe.pipe.languagemodel.OpenAILanguageModel
 import io.github.jysohnn.kopipe.tool.Tool
 import io.github.jysohnn.kopipe.tool.ToolSelector
 import io.github.jysohnn.kopipe.tool.shell.ShellToolBox
@@ -18,21 +18,21 @@ fun main() {
     val toolContext = Context()
 
     val contextAwareLanguageModel = ContextAwareLanguageModel(
-        languageModel = GeminiLanguageModel(),
+        languageModel = OpenAILanguageModel(),
         context = context,
         knowledgeContext = knowledgeContext,
         toolContext = toolContext
     )
 
     print("[INFO]\nGenerating knowledge based on the current directory...\n")
-    val knowledgeStore = GeminiEmbeddingVectorStore()
+    val knowledgeStore = OpenAIEmbeddingVectorStore()
     knowledgeStore.store(
         knowledge = createKnowledgeOfCurrentDirectory()
     )
     println("=> Completed.")
 
     val toolSelector = ToolSelector(
-        languageModel = GeminiLanguageModel(),
+        languageModel = OpenAILanguageModel(),
         tools = ShellToolBox.getAll()
     )
 
