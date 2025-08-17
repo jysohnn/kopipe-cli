@@ -1,6 +1,8 @@
 # Kopipe CLI
 
-**Kopipe CLI** is an intelligent command-line interface tool built on the [kopipe](https://github.com/jysohnn/kopipe) library. This CLI is a context-aware AI assistant that accepts natural language input and utilizes OpenAI's language models and vector search to select and execute appropriate tools.
+**Kopipe CLI** is an intelligent command-line interface tool built on the [kopipe](https://github.com/jysohnn/kopipe)
+library. This CLI is a context-aware AI assistant that accepts natural language input and utilizes OpenAI's language
+models and vector search to select and execute appropriate tools.
 
 ## Key Features
 
@@ -30,6 +32,7 @@ To use OpenAI API, set the environment variable:
 
 ```bash
 export OPENAI_API_KEY="your-api-key-here"
+export GEMINI_API_KEY="your-api-key-here"
 ```
 
 ## Usage
@@ -54,6 +57,7 @@ When the program starts, the following prompt will appear:
 ### Usage Examples
 
 #### Example 1: File System Operations
+
 ```
 [USER]
 Find all .kts files in the current directory
@@ -86,6 +90,7 @@ Based on the list of files in the current directory, the following .kts (Kotlin 
 ```
 
 #### Example 2: Code Analysis
+
 ```
 [USER]
 Explain the main functionality of the Main.kt file
@@ -123,6 +128,7 @@ Main.kt enables a conversational assistant enhanced with local project knowledge
 ```
 
 #### Example 3: Code Editing
+
 ````
 [USER]
 Improve HelloWorld.kt with code that outputs more interesting phrases, not HelloWorld.
@@ -154,6 +160,7 @@ You can now run this code to see these new messages instead of the traditional "
 ## Supported File Formats
 
 The following file formats are included in the knowledge base when scanning the current directory:
+
 - `.txt`, `.kt`, `.js`, `.java`, `.kts`
 - `.json`, `.yaml`, `.yml`, `.properties`
 - File size limit: 1MB or less

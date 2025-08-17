@@ -3,9 +3,9 @@ package io.github.jysohnn.kopipe.cli
 import io.github.jysohnn.kopipe.context.Context
 import io.github.jysohnn.kopipe.context.Message
 import io.github.jysohnn.kopipe.context.Role
-import io.github.jysohnn.kopipe.knowledge.OpenAIEmbeddingVectorStore
+import io.github.jysohnn.kopipe.knowledge.GeminiEmbeddingVectorStore
 import io.github.jysohnn.kopipe.pipe.languagemodel.ContextAwareLanguageModel
-import io.github.jysohnn.kopipe.pipe.languagemodel.OpenAILanguageModel
+import io.github.jysohnn.kopipe.pipe.languagemodel.GeminiLanguageModel
 import io.github.jysohnn.kopipe.tool.Tool
 import io.github.jysohnn.kopipe.tool.ToolSelector
 import io.github.jysohnn.kopipe.tool.shell.ShellToolBox
@@ -17,19 +17,19 @@ fun main() {
     val toolContext = Context()
 
     val contextAwareLanguageModel = ContextAwareLanguageModel(
-        languageModel = OpenAILanguageModel(),
+        languageModel = GeminiLanguageModel(),
         context = context,
         knowledgeContext = knowledgeContext,
         toolContext = toolContext
     )
 
-    val knowledgeStore = OpenAIEmbeddingVectorStore()
+    val knowledgeStore = GeminiEmbeddingVectorStore()
     knowledgeStore.addAll(
         knowledge = createKnowledgeOfCurrentDirectory()
     )
 
     val toolSelector = ToolSelector(
-        languageModel = OpenAILanguageModel(),
+        languageModel = GeminiLanguageModel(),
         tools = ShellToolBox.getAll()
     )
 
@@ -39,9 +39,9 @@ fun main() {
 
         val knowledge = knowledgeStore.retrieve(
             query = userInput,
-            minSimilarity = 0.8
+            minSimilarity = 0.7
         )
-        
+
         knowledge?.let {
             val message = Message(Role.KNOWLEDGE, it)
             if (!knowledgeContext.contains(message)) {
