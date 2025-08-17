@@ -41,8 +41,10 @@ fun main() {
             query = userInput,
             minSimilarity = 0.8
         )
-
-        knowledge?.let { knowledgeContext.append(Message(Role.KNOWLEDGE, it)) }
+        
+        knowledge?.let {
+            knowledgeContext.append(Message(Role.KNOWLEDGE, it))
+        }
 
         val (tool, toolInput) = toolSelector.select(
             input = userInput,
@@ -50,13 +52,17 @@ fun main() {
             knowledgeContext = knowledgeContext,
             toolContext = toolContext
         )
-        val toolResult = tool?.let { invokeTool(tool, toolInput) }
 
-        toolResult?.let { toolContext.append(Message(Role.TOOL, it)) }
+        tool?.let {
+            invokeTool(tool, toolInput)
+        }?.let { result ->
+            toolContext.append(Message(Role.TOOL, result))
+        }
 
         val assistantOutput = contextAwareLanguageModel.execute(
             input = userInput
         )
+
         printAssistantOutput(assistantOutput = assistantOutput)
     }
 }
