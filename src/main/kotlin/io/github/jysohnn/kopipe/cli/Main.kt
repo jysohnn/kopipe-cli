@@ -23,12 +23,12 @@ fun main() {
         toolContext = toolContext
     )
 
-    println("Generating knowledge based on the current directory...")
+    println("[INFO]\nGenerating knowledge based on the current directory...")
     val knowledgeStore = GeminiEmbeddingVectorStore()
     knowledgeStore.store(
         knowledge = createKnowledgeOfCurrentDirectory()
     )
-    println("Knowledge generation completed.")
+    println("[INFO]\nKnowledge generation completed.")
 
     val toolSelector = ToolSelector(
         languageModel = GeminiLanguageModel(),
@@ -73,8 +73,12 @@ fun main() {
 }
 
 private fun invokeTool(tool: Tool, input: String): String {
-    printToolInput(toolName = tool.name, toolInput = input)
-    val answer = readUserInput()
+    val answer = if (tool.isUserConsentRequired) {
+        printToolInput(toolName = tool.name, toolInput = input)
+        readUserInput()
+    } else {
+        "yes"
+    }
 
     var output = "User refuses to run tool."
     if (answer == "yes" || answer == "y") {
