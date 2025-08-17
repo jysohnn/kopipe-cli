@@ -43,7 +43,10 @@ fun main() {
         )
         
         knowledge?.let {
-            knowledgeContext.append(Message(Role.KNOWLEDGE, it))
+            val message = Message(Role.KNOWLEDGE, it)
+            if (!knowledgeContext.contains(message)) {
+                knowledgeContext.append(message)
+            }
         }
 
         val (tool, toolInput) = toolSelector.select(
