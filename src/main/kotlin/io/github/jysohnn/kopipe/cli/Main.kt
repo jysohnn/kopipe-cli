@@ -24,7 +24,7 @@ fun main() {
     )
 
     val knowledgeStore = GeminiEmbeddingVectorStore()
-    knowledgeStore.addAll(
+    knowledgeStore.store(
         knowledge = createKnowledgeOfCurrentDirectory()
     )
 
