@@ -177,4 +177,4 @@ The following file formats are included in the knowledge base when scanning the 
 
 ## License
 
-This project is based on the kopipe library and follows the license of that library.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
