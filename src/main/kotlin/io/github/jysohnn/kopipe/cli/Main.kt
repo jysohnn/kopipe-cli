@@ -1,5 +1,6 @@
 package io.github.jysohnn.kopipe.cli
 
+import io.github.jysohnn.kopipe.cli.util.LoadingSpinner
 import io.github.jysohnn.kopipe.context.Context
 import io.github.jysohnn.kopipe.context.Message
 import io.github.jysohnn.kopipe.context.Role
@@ -23,21 +24,24 @@ fun main() {
         toolContext = toolContext
     )
 
-    println("[INFO]\nGenerating knowledge based on the current directory...")
+    print("[INFO]\nGenerating knowledge based on the current directory...\n")
     val knowledgeStore = GeminiEmbeddingVectorStore()
     knowledgeStore.store(
         knowledge = createKnowledgeOfCurrentDirectory()
     )
-    println("[INFO]\nKnowledge generation completed.")
+    println("=> Completed.")
 
     val toolSelector = ToolSelector(
         languageModel = GeminiLanguageModel(),
         tools = ShellToolBox.getAll()
     )
 
+    val loadingSpinner = LoadingSpinner("Thinking")
+
     while (true) {
         val userInput = readUserInput()
         if (userInput == "/quit") break
+        loadingSpinner.start()
 
         val knowledge = knowledgeStore.retrieve(
             query = userInput,
@@ -59,8 +63,10 @@ fun main() {
         )
 
         tool?.let {
-            invokeTool(tool, toolInput)
-        }?.let { result ->
+            loadingSpinner.stop()
+            val result = invokeTool(tool, toolInput)
+            loadingSpinner.start()
+
             toolContext.append(Message(Role.TOOL, result))
         }
 
@@ -68,6 +74,7 @@ fun main() {
             input = userInput
         )
 
+        loadingSpinner.stop()
         printAssistantOutput(assistantOutput = assistantOutput)
     }
 }
@@ -82,6 +89,8 @@ private fun invokeTool(tool: Tool, input: String): String {
 
     var output = "User refuses to run tool."
     if (answer == "yes" || answer == "y") {
+        if (tool.isUserConsentRequired) println()
+
         output = tool.invoke(input = input)
         printToolOutput(toolOutput = output)
     }
@@ -125,41 +134,34 @@ private const val YELLOW_TEXT_COLOR = "\u001B[33m"
 
 private fun readUserInput(): String {
     print(
-        """
-            |$GREEN_TEXT_COLOR
-            |[${Role.USER}]
-            |$RESET_TEXT_COLOR""".trimMargin()
+        """|$GREEN_TEXT_COLOR
+           |[${Role.USER}]
+           |$RESET_TEXT_COLOR""".trimMargin()
     )
     return readln()
 }
 
 private fun printToolInput(toolName: String, toolInput: String) {
     print(
-        """
-            |${YELLOW_TEXT_COLOR}
-            |[${Role.TOOL}]
-            |Do you want to use the $toolName tool with the following request? (yes/no)
-            |$toolInput
-            |$RESET_TEXT_COLOR""".trimMargin()
+        """|$YELLOW_TEXT_COLOR[${Role.TOOL}]
+           |Do you want to use the $toolName tool with the following request? (yes/no)
+           |$toolInput
+           |$RESET_TEXT_COLOR""".trimMargin()
     )
 }
 
 private fun printToolOutput(toolOutput: String) {
     print(
-        """
-            |${YELLOW_TEXT_COLOR}
-            |[${Role.TOOL}]
-            |$toolOutput
-            |$RESET_TEXT_COLOR""".trimMargin()
+        """|$YELLOW_TEXT_COLOR[${Role.TOOL}]
+           |$toolOutput
+           |$RESET_TEXT_COLOR""".trimMargin()
     )
 }
 
 private fun printAssistantOutput(assistantOutput: String) {
     print(
-        """
-            |${BLUE_TEXT_COLOR}
-            |[${Role.ASSISTANT}]
-            |$assistantOutput
-            |$RESET_TEXT_COLOR""".trimMargin()
+        """|$BLUE_TEXT_COLOR[${Role.ASSISTANT}]
+           |$assistantOutput
+           |$RESET_TEXT_COLOR""".trimMargin()
     )
 }
