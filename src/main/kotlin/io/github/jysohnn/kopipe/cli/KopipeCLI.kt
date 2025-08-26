@@ -47,6 +47,12 @@ fun main() {
             query = userInput,
             minSimilarity = 0.8
         )
+        val knowledgeFileName = knowledge?.let {
+            val regex = Regex("""File Name:\s*(.+)""")
+            val match = regex.find(it)
+
+            match?.groupValues?.get(1)
+        }
 
         knowledge?.let {
             val message = Message(Role.KNOWLEDGE, it)
@@ -70,12 +76,13 @@ fun main() {
             toolContext.append(Message(Role.TOOL, result))
         }
 
-        val assistantOutput = contextAwareLanguageModel.execute(
-            input = userInput
-        )
-
         loadingSpinner.stop()
-        printAssistantOutput(assistantOutput = assistantOutput, knowledge = knowledge)
+
+        println("$BLUE_TEXT_COLOR[${Role.ASSISTANT}]")
+        contextAwareLanguageModel.executeByStreaming(input = userInput) { chunk ->
+            print(chunk)
+        }
+        println("$RESET_TEXT_COLOR${if (knowledgeFileName != null) "\nSource: $knowledgeFileName" else ""}")
     }
 }
 
@@ -159,20 +166,5 @@ private fun printToolOutput(toolOutput: String) {
         """|$YELLOW_TEXT_COLOR[${Role.TOOL}]
            |$toolOutput
            |$RESET_TEXT_COLOR""".trimMargin()
-    )
-}
-
-private fun printAssistantOutput(assistantOutput: String, knowledge: String?) {
-    val fileName = knowledge?.let {
-        val regex = Regex("""File Name:\s*(.+)""")
-        val match = regex.find(it)
-
-        match?.groupValues?.get(1)
-    }
-
-    print(
-        """|$BLUE_TEXT_COLOR[${Role.ASSISTANT}]
-           |$assistantOutput
-           |$RESET_TEXT_COLOR${if (fileName != null) "\nSource: $fileName\n\n" else ""}""".trimMargin()
     )
 }
