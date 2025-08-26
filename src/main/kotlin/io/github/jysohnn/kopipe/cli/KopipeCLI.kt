@@ -45,7 +45,7 @@ fun main() {
 
         val knowledge = knowledgeStore.retrieve(
             query = userInput,
-            minSimilarity = 0.8
+            minSimilarity = 0.65
         )
         val knowledgeFileName = knowledge?.let {
             val regex = Regex("""File Name:\s*(.+)""")
